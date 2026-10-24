@@ -11,14 +11,13 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010])
 ])
 
-# 这里写你自己数据集的路径
 train_path = r"D:\my_dataset\train"
 test_path = r"D:\my_dataset\val"
 
 train_dataset = datasets.ImageFolder(train_path, transform=transform)
 test_dataset = datasets.ImageFolder(test_path, transform=transform)
 
-batch_size = 64
+batch_size = 32
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
@@ -36,13 +35,13 @@ class MyAlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
 
-            nn.Conv2d(192, 384, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(192, 576, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
 
-            nn.Conv2d(384, 256, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(576, 576, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
 
-            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(576, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
@@ -62,10 +61,10 @@ class MyAlexNet(nn.Module):
         return x
 
 # ========== 3. 设备、模型、损失、优化器 ==========
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0")
 model = MyAlexNet().to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.08, momentum=0.7)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
 epochs = 50
 train_loss_list = []
@@ -127,7 +126,7 @@ plt.plot(x, test_acc_list, label="test acc", color="green", linestyle="--")
 plt.xlabel("epoch")
 plt.legend()
 plt.grid(True)
-plt.savefig("D:\\my_dataset\\result.png",dpi=300)
+plt.savefig("D:\\my_dataset\\result1.png",dpi=300)
 
 
 
