@@ -38,10 +38,10 @@ class MyAlexNet(nn.Module):
             nn.Conv2d(192, 576, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
 
-            nn.Conv2d(576, 576, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(576, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
 
-            nn.Conv2d(576, 256, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
         )
@@ -64,7 +64,7 @@ class MyAlexNet(nn.Module):
 device = torch.device("cuda:0")
 model = MyAlexNet().to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.08, momentum=0.9)
 
 epochs = 50
 train_loss_list = []
