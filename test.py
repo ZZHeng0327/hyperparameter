@@ -28,34 +28,29 @@ class MyAlexNet(nn.Module):
     def __init__(self, num_classes=10):
         super().__init__()
         self.features = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
 
             nn.Conv2d(64, 192, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2, stride=2),
 
             nn.Conv2d(192, 384, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
 
-            nn.Conv2d(384, 768, kernel_size=3, stride=1, padding=1),
-            nn.ReLU(inplace=True),
-
-            nn.Conv2d(768, 256, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(384, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
 
             nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2, stride=2),
         )
         self.classifier = nn.Sequential(
             nn.Dropout(0.3),
-            nn.Linear(256 * 2 * 2, 1024),
+            nn.Linear(256 * 3 * 3, 2304),
             nn.ReLU(inplace=True),
             nn.Dropout(0.4),
-            nn.Linear(1024, 1024),
+            nn.Linear(2304, 1024),
             nn.ReLU(inplace=True),
             nn.Linear(1024, num_classes),
         )
@@ -131,7 +126,7 @@ plt.plot(x, test_acc_list, label="test acc", color="green", linestyle="--")
 plt.xlabel("epoch")
 plt.legend()
 plt.grid(True)
-plt.savefig("D:\\my_dataset\\result4.png",dpi=300)
+plt.savefig("D:\\my_dataset\\result5.png",dpi=300)
 
 
 
